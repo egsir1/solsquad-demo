@@ -17,14 +17,14 @@ pub struct RegisterUser<'info> {
 }
 
 #[derive(Accounts)]
-pub struct UpdateAccountSettings<'info> {
+pub struct UpdateUserAccountSettings<'info> {
     #[account(mut, has_one = wallet)]
     pub user: Account<'info, User>,
     pub wallet: Signer<'info>,
 }
 
 #[derive(Accounts)]
-pub struct UpdateSurveyStats<'info> {
+pub struct UpdateUserSurveyStats<'info> {
     #[account(mut, has_one = wallet)]
     pub user: Account<'info, User>,
     pub wallet: Signer<'info>,
