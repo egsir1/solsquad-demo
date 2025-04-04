@@ -5,52 +5,58 @@ const Overview = () => {
 	return (
 		<Styles.OverViewContainer>
 			<Styles.OverviewCard>
-				<div>
-					<Styles.CardLeft>
-						<img
-							height={30}
-							width={30}
-							src='/assets/svg-images/Solana.svg'
-							alt='77'
-						/>
-
-						<Styles.CardTitle>Current Balance </Styles.CardTitle>
-					</Styles.CardLeft>
-					<Styles.CardSubTitle>0.00 Sol</Styles.CardSubTitle>
-				</div>
-				<Styles.CardRight>
-					<div>...</div>
-				</Styles.CardRight>
+				<Styles.CardLeft>
+					<img
+						height={30}
+						width={30}
+						src='/assets/svg-images/Solana.svg'
+						alt='Solana Logo'
+					/>
+					<Styles.CardTitle>Current Balance</Styles.CardTitle>
+				</Styles.CardLeft>
+				<Styles.CardSubTitle>0.00 SOL</Styles.CardSubTitle>
 			</Styles.OverviewCard>
 
 			<Styles.OverviewCard>
 				<Styles.CardLeft>
-					<Styles.CardTitle>Total Earnings (in USD) </Styles.CardTitle>
-					<Styles.CardSubTitle>0.00 USD</Styles.CardSubTitle>
+					<img
+						height={25}
+						width={25}
+						src='/assets/svg-images/dollar.svg'
+						alt='Solana Logo'
+						style={{ margin: '5px' }}
+					/>
+					<Styles.CardTitle>Total Earnings</Styles.CardTitle>
 				</Styles.CardLeft>
-				<Styles.CardRight>
-					<div>...</div>
-				</Styles.CardRight>
+				<Styles.CardSubTitle>0.00 USD</Styles.CardSubTitle>
 			</Styles.OverviewCard>
 
 			<Styles.OverviewCard>
 				<Styles.CardLeft>
-					<Styles.CardTitle>Created Surveys </Styles.CardTitle>
-					<Styles.CardSubTitle>0</Styles.CardSubTitle>
+					<img
+						height={25}
+						width={25}
+						src='/assets/svg-images/plus.svg'
+						alt='Solana Logo'
+						style={{ margin: '5px' }}
+					/>
+					<Styles.CardTitle>Created Surveys</Styles.CardTitle>
 				</Styles.CardLeft>
-				<Styles.CardRight>
-					<div>...</div>
-				</Styles.CardRight>
+				<Styles.CardSubTitle>0</Styles.CardSubTitle>
 			</Styles.OverviewCard>
 
 			<Styles.OverviewCard>
 				<Styles.CardLeft>
-					<Styles.CardTitle>Participated Surveys </Styles.CardTitle>
-					<Styles.CardSubTitle>0</Styles.CardSubTitle>
+					<img
+						height={25}
+						width={25}
+						src='/assets/svg-images/document.svg'
+						alt='Solana Logo'
+						style={{ margin: '5px' }}
+					/>
+					<Styles.CardTitle>Participated Surveys</Styles.CardTitle>
 				</Styles.CardLeft>
-				<Styles.CardRight>
-					<div>...</div>
-				</Styles.CardRight>
+				<Styles.CardSubTitle>0</Styles.CardSubTitle>
 			</Styles.OverviewCard>
 		</Styles.OverViewContainer>
 	);

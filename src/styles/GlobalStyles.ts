@@ -1,7 +1,7 @@
 // styles/GlobalStyles.js
-"use client"; // Client-side for Styled Components
+'use client'; // Client-side for Styled Components
 
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   @font-face {

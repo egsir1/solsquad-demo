@@ -1,14 +1,19 @@
-import Sidebar from "@/components/navigation/side-bar";
-import { ReactNode } from "react";
+'use client';
+import Sidebar from '@/components/navigation/side-bar';
+import {
+	LayoutContainer,
+	MainContent,
+	SidebarWrapper,
+} from '@/components/user/analytics/style';
+import { ReactNode } from 'react';
 
 export default function UserLayout({ children }: { children: ReactNode }) {
-  return (
-    <div className="">
-      {/* Sidebar */}
-      <h1>SIDEBAR</h1>
-      <Sidebar />
-      {/* Main Content */}
-      <main>{children}</main>
-    </div>
-  );
+	return (
+		<LayoutContainer>
+			<SidebarWrapper>
+				<Sidebar />
+			</SidebarWrapper>
+			<MainContent>{children}</MainContent>
+		</LayoutContainer>
+	);
 }
