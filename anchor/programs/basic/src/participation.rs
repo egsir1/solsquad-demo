@@ -16,21 +16,6 @@ pub struct RegisterParticipation<'info> {
 }
 
 
-#[derive(Accounts)]
-pub struct RegisterParticipation<'info> {
-    #[account(
-        init,
-        payer = signer,
-        space = 8 + Participation::MAX_SIZE
-    )]
-    pub participation: Account<'info, Participation>,
-    
-    #[account(mut)]
-    pub signer: Signer<'info>,
-    
-    pub system_program: Program<'info, System>,
-}
-
 #[account]
 pub struct Participation {
     pub authority: Pubkey,
