@@ -27,7 +27,7 @@ impl Participation {
 }
 
 pub fn register_participation(ctx: Context<RegisterParticipation>, ipfn_cid: String) -> Result<()> {
-    let particpation = &mut ctx.accounts.participation;
+    let participation = &mut ctx.accounts.participation;
     participation.ipfn_cid = ipfn_cid;
     participation.authority = ctx.accounts.signer.key();
     Ok(())
