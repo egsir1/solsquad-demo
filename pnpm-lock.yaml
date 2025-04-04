@@ -35,6 +35,9 @@ dependencies:
   daisyui:
     specifier: ^4.12.24
     version: 4.12.24(postcss@8.5.3)
+  dotenv:
+    specifier: ^16.4.7
+    version: 16.4.7
   jotai:
     specifier: ^2.12.1
     version: 2.12.2(@types/react@18.3.20)(react@18.3.1)
@@ -4120,6 +4123,11 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.8.1
+    dev: false
+
+  /dotenv@16.4.7:
+    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /dunder-proto@1.0.1:

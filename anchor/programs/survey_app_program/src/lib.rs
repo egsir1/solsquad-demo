@@ -9,7 +9,7 @@ use survey::*;
 pub mod participation;
 use participation::*;
 
-declare_id!("6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF");
+declare_id!("H79NApAAG8bSD9FSh1xAfSNppbsoCQS2vBP1M1dZNnG");
 
 #[program]
 pub mod survey_app_program {
