@@ -101,7 +101,7 @@ const SurveysPage = () => {
 		<Box
 			sx={{
 				padding: '1.5rem',
-				mt: '1rem',
+				mt: '4rem',
 			}}
 		>
 			<Typography

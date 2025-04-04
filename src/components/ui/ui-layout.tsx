@@ -5,13 +5,24 @@ import { ReactNode, Suspense, useEffect, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import * as Styles from "./style";
 import { ExplorerLink } from "../cluster/cluster-ui";
-import TopBar from "../navigation/top-bar";
-
+// import TopBar from "../navigation/top-bar";
+import useScreenWidth from "@/hooks/useScreenWidth";
+import MobileSidebar from "../navigation/side-bar/mobile";
+import dynamic from "next/dynamic";
+const TopBar = dynamic(() => import("../navigation/top-bar"), {
+  ssr: false,
+})
 export function UiLayout({ children }: { children: ReactNode }) {
+  const [showSidebar, setShowSidebar] = React.useState(false);
+ 
+
+  const screenWidth = useScreenWidth();
+  const isMobile = screenWidth < 768;
   return (
     <Styles.Container>
-      <TopBar />
+      <TopBar show={showSidebar} onOpen={() => setShowSidebar(true)} />
       <Styles.Main>
+        {isMobile && showSidebar && <MobileSidebar onClose={() => setShowSidebar(false)} />}
         <Suspense>{children}</Suspense>
         <Toaster position="bottom-right" />
       </Styles.Main>

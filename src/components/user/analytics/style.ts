@@ -35,6 +35,7 @@ export const MainContent = styled.main`
 
 export const AnalyticsContainer = styled.div`
 	padding: 20px;
+	margin-top: 4rem;
 `;
 
 export const AnalyticsHeader = styled.div`

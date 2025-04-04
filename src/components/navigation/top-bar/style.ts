@@ -28,40 +28,58 @@ export const LogoIcon = styled.span`
   font-size: 2rem; // Placeholder for icon
 `;
 
-export const NavList = styled.ul`
+export const NavList = styled.div`
   list-style: none;
   padding: 0;
   display: flex;
   margin: 0 2rem;
 `;
 
-export const NavItem = styled.li`
-  
+export const NavItem = styled.div<{ $active: boolean }>`
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  grid-gap: 10px;
+  align-items: center;
+  background: ${({ $active }) =>
+    $active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
+  height: 50px;
+  width: 150px;
+  box-sizing: border-box;
+  padding-left: 20px;
 `;
 
 export const NavLink = styled(Link)<{ $active?: boolean }>`
   color: ${({ theme }) => theme.color.span_color};
   text-decoration: none;
-  padding-bottom: 5px;
   position: relative;
   font-size: 14px;
   font-family: ${({ theme }) => theme.fonts.mona_sans};
   font-weight: 500;
-  padding: 12px 15px;
-  border-radius: 8px;
+  height: 100%;
+  width: 100%;
   display: flex;
-  grid-gap: 10px;
   align-items: center;
-  background: ${({ $active }) =>$active ? "rgba(255, 255, 255, 0.1)" : "transparent"};
 `;
 
 export const RightSection = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
+
+  & > img {
+    cursor: pointer;
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    & > img {
+      display: block;
+    }
+  }
 `;
 
-export const WalletAddress = styled.span`
+export const WalletAddress = styled.p`
   font-size: 14px;
   margin-right: 15px;
 `;
@@ -79,6 +97,6 @@ export const Avatar = styled.div`
   margin-right: 10px;
 `;
 
-export const DropdownIcon = styled.span`
+export const DropdownIcon = styled.p`
   font-size: 12px;
 `;
