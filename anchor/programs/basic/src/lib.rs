@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 pub mod user;
 use user::*;
 
-pub mod survey
+pub mod survey;
 use survey::*;
 
 declare_id!("6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF");
