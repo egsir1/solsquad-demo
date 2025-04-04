@@ -80,8 +80,8 @@ pub fn register_user(
     Ok(())
 }
 
-pub fn update_account_settings(
-    ctx: Context<UpdateAccountSettings>,
+pub fn update_user_account_settings(
+    ctx: Context<UpdateUserAccountSettings>,
     username: String,
     email: String,
     avatar_ipfs_hash: String,
@@ -97,8 +97,8 @@ pub fn update_account_settings(
     Ok(())
 }
 
-pub fn update_survey_stats(
-    ctx: Context<UpdateSurveyStats>,
+pub fn update_user_survey_stats(
+    ctx: Context<UpdateUserSurveyStats>,
     earned_money: u64,
     surveys_attended: u32,
     surveys_created: u32,
