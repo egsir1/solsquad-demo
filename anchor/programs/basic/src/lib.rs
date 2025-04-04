@@ -6,7 +6,7 @@ use user::*;
 declare_id!("6z68wfurCMYkZG51s1Et9BJEd9nJGUusjHXNt4dGbNNF");
 
 #[program]
-pub mod user_program {
+pub mod survey_app_program {
     use super::*;
 
     pub fn register_user(
