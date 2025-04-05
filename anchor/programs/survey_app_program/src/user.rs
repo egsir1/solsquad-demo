@@ -47,7 +47,7 @@ pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()>
     let user = &mut ctx.accounts.user;
     let bump = ctx.bumps.user;
 
-    user.wallet = *ctx.accounts.signer.key;
+    user.wallet =ctx.accounts.signer.key;
     user.ipfn_cid = ipfn_cid;
     user.bump = bump;
 
@@ -57,5 +57,5 @@ pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()>
 pub fn update_user(ctx: Context<UpdateUser>, ipfn_cid: String) -> Result<()> {
     let user = &mut ctx.accounts.user;
     user.ipfn_cid = ipfn_cid;
-    Ok(())    
+    Ok(())
 }
