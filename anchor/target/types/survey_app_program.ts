@@ -99,7 +99,23 @@ export type SurveyAppProgram = {
         {
           "name": "user",
           "writable": true,
-          "signer": true
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
         },
         {
           "name": "signer",
@@ -205,6 +221,10 @@ export type SurveyAppProgram = {
           {
             "name": "ipfnCid",
             "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }

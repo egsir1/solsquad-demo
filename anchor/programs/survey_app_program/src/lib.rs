@@ -19,10 +19,6 @@ pub mod survey_app_program {
         user::register_user(ctx, ipfn_cid)
     }
 
-    pub fn update_user(ctx: Context<UpdateUser>, ipfn_cid: String) -> Result<()> {
-        user::update_user(ctx, ipfn_cid)
-    }
-
     pub fn register_survey(
         ctx: Context<RegisterSurvey>,
         ipfn_cid: String
@@ -33,32 +29,11 @@ pub mod survey_app_program {
         )
     }
 
-    pub fn update_survey(
-        ctx: Context<UpdateSurvey>,
-        ipfn_cid: String
-    )-> Result<()> {
-        survey::update_survey(
-            ctx,
-            ipfn_cid
-        )
-    }
-
-
     pub fn register_participation(
         ctx: Context<RegisterParticipation>,
         ipfn_cid: String
     ) ->Result<()> {
         participation::register_participation(
-            ctx,
-            ipfn_cid
-        )
-    }
-
-    pub fn update_participation(
-        ctx: Context<UpdateParticipation>,
-        ipfn_cid: String
-    ) ->Result<()> {
-        participation::update_participation(
             ctx,
             ipfn_cid
         )

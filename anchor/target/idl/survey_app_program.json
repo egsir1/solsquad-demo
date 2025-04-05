@@ -1,5 +1,5 @@
 {
-  "address": "DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn",
+  "address": "12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe",
   "metadata": {
     "name": "survey_app_program",
     "version": "0.1.0",
@@ -93,7 +93,23 @@
         {
           "name": "user",
           "writable": true,
-          "signer": true
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
         },
         {
           "name": "signer",
@@ -199,6 +215,10 @@
           {
             "name": "ipfn_cid",
             "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
           }
         ]
       }
