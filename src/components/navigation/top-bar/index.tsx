@@ -9,7 +9,8 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { PROGRAM_ID } from "@/types/json";
-// import { useWalletDisconnectRedirect } from "@/hooks/useWalletCheck";
+import { useWalletDisconnectRedirect } from "@/hooks/useWalletCheck";
+import { useFetchProfileData } from "@/hooks/useFetchProfileData";
 
 interface Props {
   show: boolean;
@@ -39,7 +40,8 @@ const TopBar: FC<Props> = ({ show, onOpen }) => {
   const router = useRouter();
   const isMobile = screenWidth < 768;
   const { connection } = useConnection(); // ⬅️ get this at the top of your component
-  // useWalletDisconnectRedirect();
+  useWalletDisconnectRedirect();
+  useFetchProfileData();
 
   // Access the connected wallet
   const { publicKey } = useWallet();
@@ -120,6 +122,7 @@ const TopBar: FC<Props> = ({ show, onOpen }) => {
           <Image src={"/assets/add.svg"} width={15} height={15} alt="" />
           Create
         </Styles.CreateButton>
+        <Image src={"/assets/hamburger.svg"} width={24} height={24} alt=""  onClick={onOpen}/>
       </Styles.RightSection>
 
       {/* WalletMultiButton for Connect/Disconnect */}

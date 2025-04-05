@@ -6,6 +6,7 @@ import * as Styles from "./style";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useProfileStore } from "@/store/user-data-store";
 
 interface Props {
   onClose: () => void;
@@ -55,6 +56,7 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
 
   const path = usePathname();
   const router = useRouter();
+  const { profile } = useProfileStore();
 
   return (
     <Styles.SidebarContainer height="0">
@@ -101,10 +103,9 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
       </Styles.NavList>
 
       <Styles.UserProfile>
-        <Styles.Avatar
-          src="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"
-          alt="John Carter"
-        />
+        <Styles.UserFirtLetter>
+          <p>{profile?.firstName?.slice(0, 1)}</p>
+        </Styles.UserFirtLetter>
         <Styles.UserInfo>
           <Styles.UserName>John Carter</Styles.UserName>
           <Styles.AccountLink href="/account">

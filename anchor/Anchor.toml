@@ -6,14 +6,14 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-survey_app_program = "12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe"
+survey_app_program = "DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "https://api.devnet.solana.com"
-wallet = "/Users/mac/.config/solana/id.json"
+cluster = "localnet"
+wallet = "/home/isroiljon/.config/solana/id.json"
 
 [scripts]
 test = "../node_modules/.bin/jest --preset ts-jest"

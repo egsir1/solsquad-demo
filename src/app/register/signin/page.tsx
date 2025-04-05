@@ -45,11 +45,11 @@ const SignIn: FC = () => {
   const { publicKey } = useWallet();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (publicKey) {
-  //     router.push('/user/analytics'); // redirect to main page
-  //   }
-  // }, [publicKey, router]);
+  useEffect(() => {
+    if (publicKey) {
+      router.push('/user/analytics'); // redirect to main page
+    }
+  }, [publicKey, router]);
 
   return (
     <Container>

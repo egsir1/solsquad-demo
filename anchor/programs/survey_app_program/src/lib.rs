@@ -9,7 +9,9 @@ use survey::*;
 pub mod participation;
 use participation::*;
 
-declare_id!("12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe");
+// declare_id!("12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe");
+declare_id!("DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn");
+
 
 #[program]
 pub mod survey_app_program {
@@ -18,7 +20,11 @@ pub mod survey_app_program {
     pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()> {
         user::register_user(ctx, ipfn_cid)
     }
-
+    
+    pub fn update_user(ctx: Context<UpdateUser>, ipfn_cid: String) -> Result<()> {
+        user::update_user(ctx, ipfn_cid)
+    }
+    
     pub fn register_survey(
         ctx: Context<RegisterSurvey>,
         ipfn_cid: String

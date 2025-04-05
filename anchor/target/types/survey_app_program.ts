@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/survey_app_program.json`.
  */
 export type SurveyAppProgram = {
-  "address": "12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe",
+  "address": "DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn",
   "metadata": {
     "name": "surveyAppProgram",
     "version": "0.1.0",
@@ -116,6 +116,40 @@ export type SurveyAppProgram = {
               }
             ]
           }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfnCid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "updateUser",
+      "discriminator": [
+        9,
+        2,
+        160,
+        169,
+        118,
+        12,
+        207,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
         },
         {
           "name": "signer",

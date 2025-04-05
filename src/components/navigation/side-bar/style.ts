@@ -1,5 +1,3 @@
-
-
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -114,6 +112,7 @@ export const UserProfile = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 2rem;
+  grid-gap: 0.5rem;
   font-family: ${({ theme }) => theme.fonts.mona_sans};
 `;
 
@@ -143,12 +142,27 @@ export const AccountLink = styled(Link)`
   }
 `;
 
+export const UserFirtLetter = styled.div`
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${({ theme }) => theme.color.light_green_color};
+  > p {
+    font-size: 1rem;
+    font-family: ${({ theme }) => theme.fonts.mona_sans};
+    color: white;
+  }
+`;
 
 export const CreateButton = styled.button`
   position: relative;
   border-radius: 8px;
   display: flex;
-  grid-gap:5px;
+  grid-gap: 5px;
   align-items: center;
   background-color: ${({ theme }) => theme.color.pink_color};
   height: 40px;
@@ -162,5 +176,4 @@ export const CreateButton = styled.button`
   border: none;
   color: white;
   font-family: ${({ theme }) => theme.fonts.mona_sans};
-  
 `;

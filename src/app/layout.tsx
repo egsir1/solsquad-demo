@@ -44,17 +44,17 @@ export default function RootLayout({
     }
 
     // Handle redirection logic after connection/disconnection settles
-    // if (!connected || !publicKey) {
-    //   if (!isPublicRoute) {
-    //     setIsLoading(true); // Show loading before redirect
-    //     router.push("/register/signin");
-    //   }
-    // } else {
-    //   if (isPublicRoute) {
-    //     setIsLoading(true); // Show loading before redirect
-    //     router.push("/user/analytics");
-    //   }
-    // }
+    if (!connected || !publicKey) {
+      if (!isPublicRoute) {
+        setIsLoading(true); // Show loading before redirect
+        router.push("/register/signin");
+      }
+    } else {
+      if (isPublicRoute) {
+        setIsLoading(true); // Show loading before redirect
+        router.push("/user/analytics");
+      }
+    }
 
     // Reset loading state once redirection is complete
     setIsLoading(false);
