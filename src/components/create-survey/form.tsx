@@ -1,13 +1,67 @@
 // components/SurveyForm.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
+import { useState, useEffect, ReactNode } from "react";
 import * as Styles from "./styles";
 import Image from "next/image";
 import { SurveyModel } from "@/models/SurveyModel";
-import { uploadSurveyToFilebase } from "@/utils/uploadSurvey";
-import { useRouter } from "next/navigation";
-import CreateSurveyHook from "@/hooks/useRegisterSurvey";
+import { uploadToPinata, uploadToPinataSurveyGroup } from "@/utils/pinataUpload";
+import { AnchorWallet, useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { initializeSurveyStats } from "@/utils/surveyStats";
+import { addCreatedSurvey } from "@/utils/updateUserSurveys";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import idlJson from "../../../anchor/target/idl/survey_app_program.json";
+import { AnchorProvider, Program, Idl, Wallet } from "@coral-xyz/anchor";
+import toast from "react-hot-toast";
+
+
+const idl = idlJson as Idl;
+const programId = new PublicKey("DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn");
+
+
+export const submitSurveyToSolana = async (
+  ipfsCid: string,
+  wallet: AnchorWallet,
+  connection: Connection
+): Promise<void> => {
+  try {
+
+    if (!wallet || !wallet.publicKey) {
+      toast.error("Wallet not connected");
+      return;
+    }
+
+    const provider = new AnchorProvider(connection, wallet, {
+      commitment: "confirmed",
+    });
+
+    const program = new Program(idl, provider);
+
+    // Derive PDA for survey
+    const [surveyPda] = await PublicKey.findProgramAddress(
+      [Buffer.from("survey"), wallet.publicKey.toBuffer()],
+      program.programId
+    );
+
+    await program.methods
+      .registerSurvey(ipfsCid) // match method name & argument
+      .accounts({
+        survey: surveyPda,
+        signer: wallet.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    toast.success("Survey registered on Solana!");
+  } catch (error: any) {
+    console.error("Error writing to Solana:", error);
+    toast.error("Failed to save survey on-chain");
+    throw error;
+  }
+};
+
+
 
 // Types
 export interface FormData {
@@ -26,7 +80,17 @@ export interface Question {
   options: string[];
 }
 
+interface SurveyFormProps {
+  onSubmit: (data: FormData) => void;
+}
+
+const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }): ReactNode => {
+  // const  wallet = useAnchorWallet();
+  // const { connection } = useConnection(); 
+  const { publicKey } = useWallet();
+
 const SurveyForm = () => {
+
   const [formData, setFormData] = useState<FormData>({
     title: "",
     surveyType: "FREE",
@@ -91,12 +155,21 @@ const SurveyForm = () => {
   const router = useRouter();
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    
+    if (!publicKey) {
+      alert('Please connect your wallet first');
+      return;
+    }
+    
 
     try {
       // Create SurveyModel from form data
       const surveyData: SurveyModel = {
         surveyId: `survey_${Date.now()}`,
         title: formData.title,
+        creator: publicKey.toString(),
+        questions: formData.questions.map(q => ({
+
         creator: "user_public_key", // TODO: Get actual user's public key
         questions: formData.questions.map((q) => ({
           question: q.text,
@@ -123,6 +196,26 @@ const SurveyForm = () => {
         return;
       }
 
+      // Initialize survey stats
+      const {cid: stats_surway_cid}= await initializeSurveyStats(surveyData.surveyId, surveyData.questions);
+      console.log('Survey stats initialized');
+
+      // Upload to Pinata
+      surveyData.stats_surway_cid = stats_surway_cid;
+      console.log('Uploading survey to Pinata:', surveyData);
+      const result = await uploadToPinataSurveyGroup(surveyData, `${surveyData.surveyId}.json`);
+      console.log('Survey uploaded successfully:', result);
+
+      // Update user's created surveys list
+      console.log('Calling addCreatedSurvey with:', publicKey.toString(), surveyData.surveyId);
+      await addCreatedSurvey(result.ipfsHash, publicKey.toString(), surveyData.surveyId);
+      console.log('addCreatedSurvey completed');
+
+      // await submitSurveyToSolana(
+      //   result.ipfsHash,
+      //   wallet,
+      //   connection
+      // );
       // Upload to Filebase
       const result = await uploadSurveyToFilebase(surveyData);
 
@@ -144,6 +237,13 @@ const SurveyForm = () => {
         expireTime: "",
         questions: [],
       });
+      
+    } catch (error: unknown) {
+      console.error('Error submitting survey:', error);
+      alert(error instanceof Error ? error.message : 'Failed to submit survey. Please try again.');
+    }
+  };
+
 
       // router.push("/survey-market");
     } catch (error) {
