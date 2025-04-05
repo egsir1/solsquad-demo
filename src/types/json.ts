@@ -1,3 +1,4 @@
+import { PublicKey } from '@solana/web3.js';
 
 
 export const SurveyData = [
@@ -433,3 +434,8 @@ export const SellData = [
         sold_at: 0,
     },
 ];
+
+
+
+// Replace with your deployed program ID
+export const PROGRAM_ID = new PublicKey("H79NApAAG8bSD9FSh1xAfSNppbsoCQS2vBP1M1dZNnG");

@@ -1,153 +1,207 @@
 {
-	"address": "12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe",
-	"metadata": {
-		"name": "survey_app_program",
-		"version": "0.1.0",
-		"spec": "0.1.0",
-		"description": "Created with Anchor"
-	},
-	"instructions": [
-		{
-			"name": "register_participation",
-			"discriminator": [184, 98, 113, 182, 173, 52, 218, 209],
-			"accounts": [
-				{
-					"name": "participation",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "signer",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "system_program",
-					"address": "11111111111111111111111111111111"
-				}
-			],
-			"args": [
-				{
-					"name": "ipfn_cid",
-					"type": "string"
-				}
-			]
-		},
-		{
-			"name": "register_survey",
-			"discriminator": [19, 3, 84, 30, 171, 101, 227, 250],
-			"accounts": [
-				{
-					"name": "survey",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "signer",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "system_program",
-					"address": "11111111111111111111111111111111"
-				}
-			],
-			"args": [
-				{
-					"name": "ipfn_cid",
-					"type": "string"
-				}
-			]
-		},
-		{
-			"name": "register_user",
-			"discriminator": [2, 241, 150, 223, 99, 214, 116, 97],
-			"accounts": [
-				{
-					"name": "user",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "signer",
-					"writable": true,
-					"signer": true
-				},
-				{
-					"name": "system_program",
-					"address": "11111111111111111111111111111111"
-				}
-			],
-			"args": [
-				{
-					"name": "ipfn_cid",
-					"type": "string"
-				}
-			]
-		}
-	],
-	"accounts": [
-		{
-			"name": "Participation",
-			"discriminator": [237, 154, 142, 46, 143, 63, 189, 18]
-		},
-		{
-			"name": "Survey",
-			"discriminator": [146, 73, 17, 4, 6, 233, 167, 141]
-		},
-		{
-			"name": "User",
-			"discriminator": [159, 117, 95, 227, 239, 151, 58, 236]
-		}
-	],
-	"types": [
-		{
-			"name": "Participation",
-			"type": {
-				"kind": "struct",
-				"fields": [
-					{
-						"name": "authority",
-						"type": "pubkey"
-					},
-					{
-						"name": "ipfn_cid",
-						"type": "string"
-					}
-				]
-			}
-		},
-		{
-			"name": "Survey",
-			"type": {
-				"kind": "struct",
-				"fields": [
-					{
-						"name": "authority",
-						"type": "pubkey"
-					},
-					{
-						"name": "ipfn_cid",
-						"type": "string"
-					}
-				]
-			}
-		},
-		{
-			"name": "User",
-			"type": {
-				"kind": "struct",
-				"fields": [
-					{
-						"name": "wallet",
-						"type": "pubkey"
-					},
-					{
-						"name": "ipfn_cid",
-						"type": "string"
-					}
-				]
-			}
-		}
-	]
+  "address": "DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn",
+  "metadata": {
+    "name": "survey_app_program",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "register_participation",
+      "discriminator": [
+        184,
+        98,
+        113,
+        182,
+        173,
+        52,
+        218,
+        209
+      ],
+      "accounts": [
+        {
+          "name": "participation",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfn_cid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "register_survey",
+      "discriminator": [
+        19,
+        3,
+        84,
+        30,
+        171,
+        101,
+        227,
+        250
+      ],
+      "accounts": [
+        {
+          "name": "survey",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfn_cid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "register_user",
+      "discriminator": [
+        2,
+        241,
+        150,
+        223,
+        99,
+        214,
+        116,
+        97
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfn_cid",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Participation",
+      "discriminator": [
+        237,
+        154,
+        142,
+        46,
+        143,
+        63,
+        189,
+        18
+      ]
+    },
+    {
+      "name": "Survey",
+      "discriminator": [
+        146,
+        73,
+        17,
+        4,
+        6,
+        233,
+        167,
+        141
+      ]
+    },
+    {
+      "name": "User",
+      "discriminator": [
+        159,
+        117,
+        95,
+        227,
+        239,
+        151,
+        58,
+        236
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "Participation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "ipfn_cid",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Survey",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "ipfn_cid",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "User",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "ipfn_cid",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
 }

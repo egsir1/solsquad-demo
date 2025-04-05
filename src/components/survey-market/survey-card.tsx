@@ -3,7 +3,11 @@
 import Image from "next/image";
 import { FC } from "react";
 import * as Styles from "./style";
+<<<<<<< Updated upstream
 import { SurveyModel } from "@/models/SurveyModel";
+=======
+import { useRouter } from "next/navigation";
+>>>>>>> Stashed changes
 
 interface SurveyCardProps extends Omit<SurveyModel, 'questions'> {
   onSetQrUrl: () => void;
@@ -19,6 +23,7 @@ export const SurveyCard: FC<SurveyCardProps> = ({
   expireTime,
   onSetQrUrl
 }) => {
+<<<<<<< Updated upstream
   // Calculate duration from expireTime
   const duration = new Date(expireTime).toLocaleDateString();
   
@@ -28,10 +33,14 @@ export const SurveyCard: FC<SurveyCardProps> = ({
   const owner_avatar = "/assets/default-avatar.png";
 
   const percentage = Math.min((participants / maxResponses) * 100, 100);
+=======
+  const percentage = Math.min((participants / limit) * 100, 100);
+  const router = useRouter();
+>>>>>>> Stashed changes
 
   return (
     <Styles.Card>
-      <Styles.CardHeader>
+      <Styles.CardHeader onClick={() => router.push(`/user/survey/${title}`)}>
         <div>
           <p>{title}</p>
           <div>
