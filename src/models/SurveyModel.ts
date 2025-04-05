@@ -11,8 +11,10 @@ export interface SurveyModel {
     token: string;
   };
   createdAt: string;
-  status: "ACTIVE" | "COMPLETED";
+  status: "ACTIVE" | "COMPLETED" | "EXPIRED";
   maxResponses: number;
   expireTime: string;
+  cid: string; // IPFS content identifier
+  stats_surway_cid: string;
   surveyType: string
 } 
