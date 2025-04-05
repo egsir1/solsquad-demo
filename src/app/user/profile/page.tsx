@@ -1,7 +1,9 @@
+'use client';
+import ProfilePage from '@/components/user/profile/ProfilePage';
 import React from 'react';
 
-const ProfilePage = () => {
-	return <div>ProfilePage</div>;
+const page = () => {
+	return <ProfilePage />;
 };
 
-export default ProfilePage;
+export default page;
