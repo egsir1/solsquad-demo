@@ -1,9 +1,21 @@
 use anchor_lang::prelude::*;
 
+#[account]
+pub struct User {
+    pub wallet: Pubkey,
+    pub ipfn_cid: String,
+    pub bump: u8,
+}
+
+impl User {
+    pub const MAX_SIZE: usize = 32 + 4 + 100 + 1; // Adjust size as needed
+}
+
 #[derive(Accounts)]
+#[instruction(ipfn_cid: String)] // THIS IS IMPORTANT
 pub struct RegisterUser<'info> {
     #[account(
-        init,
+        init_if_needed,
         seeds = [b"user", signer.key().as_ref()],
         bump,
         payer = signer,
@@ -17,19 +29,19 @@ pub struct RegisterUser<'info> {
     pub system_program: Program<'info, System>,
 }
 
-#[account]
-pub struct User {
-    pub wallet: Pubkey,
-    pub ipfn_cid: String,
-    pub bump: u8,
+#[derive(Accounts)]
+pub struct UpdateUser<'info> {
+    #[account(
+        mut,
+    )]
+    pub user: Account<'info, User>,
+
+    #[account(mut)]
+    pub signer: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
 }
 
-impl User {
-    pub const MAX_SIZE: usize =
-        32 + // wallet
-        4 + 100 + // ipfn_cid (String)
-        1; // bump
-}
 
 pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()> {
     let user = &mut ctx.accounts.user;
@@ -40,4 +52,10 @@ pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()>
     user.bump = bump;
 
     Ok(())
+}
+
+pub fn update_user(ctx: Context<UpdateUser>, ipfn_cid: String) -> Result<()> {
+    let user = &mut ctx.accounts.user;
+    user.ipfn_cid = ipfn_cid;
+    Ok(())    
 }

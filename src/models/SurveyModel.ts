@@ -14,4 +14,5 @@ export interface SurveyModel {
   status: "ACTIVE" | "COMPLETED";
   maxResponses: number;
   expireTime: string;
+  surveyType: string
 } 

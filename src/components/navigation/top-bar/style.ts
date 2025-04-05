@@ -66,7 +66,7 @@ export const CreateButton = styled.button`
   position: relative;
   border-radius: 8px;
   display: flex;
-  grid-gap:5px;
+  grid-gap: 5px;
   align-items: center;
   background-color: ${({ theme }) => theme.color.pink_color};
   height: 40px;
@@ -80,7 +80,6 @@ export const CreateButton = styled.button`
   border: none;
   color: white;
   font-family: ${({ theme }) => theme.fonts.mona_sans};
-  
 `;
 
 export const RightSection = styled.div`
@@ -96,6 +95,9 @@ export const RightSection = styled.div`
   @media screen and (max-width: 768px) {
     & > img {
       display: block;
+    }
+    & > button {
+      display: none;
     }
   }
 `;

@@ -1,8 +1,9 @@
 "use client";
-import ProfilePage from "@/components/user/profile/ProfilePage";
-import React from "react";
 
-const page = () => {
+import ProfilePage from "@/components/user/profile/ProfilePage";
+
+const Page = () => {
+  
   return (
     <div>
       <ProfilePage />
@@ -10,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

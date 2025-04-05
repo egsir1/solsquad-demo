@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/survey_app_program.json`.
  */
 export type SurveyAppProgram = {
-  "address": "12HfFyuzmP8mCTWCCiqcTE9VMBFzQNSyKNfCREq2yDTe",
+  "address": "DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn",
   "metadata": {
     "name": "surveyAppProgram",
     "version": "0.1.0",
@@ -29,12 +29,49 @@ export type SurveyAppProgram = {
         {
           "name": "participation",
           "writable": true,
-          "signer": true
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  97,
+                  114,
+                  116,
+                  105,
+                  99,
+                  105,
+                  112,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "survey"
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "survey",
+          "writable": true
         },
         {
           "name": "signer",
           "writable": true,
           "signer": true
+        },
+        {
+          "name": "surveyAuthority",
+          "writable": true
         },
         {
           "name": "systemProgram",
@@ -64,7 +101,25 @@ export type SurveyAppProgram = {
         {
           "name": "survey",
           "writable": true,
-          "signer": true
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  115,
+                  117,
+                  114,
+                  118,
+                  101,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "signer"
+              }
+            ]
+          }
         },
         {
           "name": "signer",
@@ -80,6 +135,14 @@ export type SurveyAppProgram = {
         {
           "name": "ipfnCid",
           "type": "string"
+        },
+        {
+          "name": "surveyType",
+          "type": "string"
+        },
+        {
+          "name": "rewardAmount",
+          "type": "u64"
         }
       ]
     },
@@ -116,6 +179,40 @@ export type SurveyAppProgram = {
               }
             ]
           }
+        },
+        {
+          "name": "signer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "ipfnCid",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "updateUser",
+      "discriminator": [
+        9,
+        2,
+        160,
+        169,
+        118,
+        12,
+        207,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true
         },
         {
           "name": "signer",
@@ -176,6 +273,18 @@ export type SurveyAppProgram = {
       ]
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "insufficientFunds",
+      "msg": "Insufficient funds to pay reward"
+    },
+    {
+      "code": 6001,
+      "name": "invalidRewardAmount",
+      "msg": "Reward amount must be 0 for FREE surveys"
+    }
+  ],
   "types": [
     {
       "name": "participation",
@@ -187,8 +296,16 @@ export type SurveyAppProgram = {
             "type": "pubkey"
           },
           {
+            "name": "survey",
+            "type": "pubkey"
+          },
+          {
             "name": "ipfnCid",
             "type": "string"
+          },
+          {
+            "name": "rewardPaid",
+            "type": "bool"
           }
         ]
       }
@@ -205,6 +322,14 @@ export type SurveyAppProgram = {
           {
             "name": "ipfnCid",
             "type": "string"
+          },
+          {
+            "name": "surveyType",
+            "type": "string"
+          },
+          {
+            "name": "rewardAmount",
+            "type": "u64"
           }
         ]
       }

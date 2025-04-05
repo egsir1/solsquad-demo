@@ -27,8 +27,9 @@ export const SurveyCard: FC<SurveyCardProps> = ({
 	const participants = 0;
 	const owner_name = creator;
 	const owner_avatar = '/assets/default-avatar.png';
-	const router = useRouter();
+
 	const percentage = Math.min((participants / maxResponses) * 100, 100);
+	const router = useRouter();
 
 	return (
 		<Styles.Card>
