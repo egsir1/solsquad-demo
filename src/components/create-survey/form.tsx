@@ -2,11 +2,14 @@
 "use client";
 
 import styled, { keyframes } from "styled-components";
-import { useState, useEffect } from "react";
+import { useState, useEffect, ReactNode } from "react";
 import * as Styles from "./styles";
 import Image from "next/image";
 import { SurveyModel } from "@/models/SurveyModel";
-import { uploadSurveyToFilebase } from "@/utils/uploadSurvey";
+import { uploadToPinata } from "@/utils/pinataUpload";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { initializeSurveyStats } from "@/utils/surveyStats";
+import { addCreatedSurvey } from "@/utils/updateUserSurveys";
 
 // Types
 interface FormData {
@@ -29,7 +32,8 @@ interface SurveyFormProps {
   onSubmit: (data: FormData) => void;
 }
 
-const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
+const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }): ReactNode => {
+  const { publicKey } = useWallet();
   const [formData, setFormData] = useState<FormData>({
     title: "",
     surveyType: "FREE",
@@ -106,12 +110,17 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
+    if (!publicKey) {
+      alert('Please connect your wallet first');
+      return;
+    }
+    
     try {
       // Create SurveyModel from form data
       const surveyData: SurveyModel = {
         surveyId: `survey_${Date.now()}`,
         title: formData.title,
-        creator: "user_public_key", // TODO: Get actual user's public key
+        creator: publicKey.toString(),
         questions: formData.questions.map(q => ({
           question: q.text,
           options: q.options.filter(opt => opt.trim() !== '') // Remove empty options
@@ -132,10 +141,19 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
         return;
       }
 
-      // Upload to Filebase
-      const result = await uploadSurveyToFilebase(surveyData);
+      // Upload to Pinata
+      console.log('Uploading survey to Pinata:', surveyData);
+      const result = await uploadToPinata(surveyData, `${surveyData.surveyId}.json`);
       console.log('Survey uploaded successfully:', result);
-      
+
+      // Initialize survey stats
+      await initializeSurveyStats(surveyData.surveyId, surveyData.questions);
+      console.log('Survey stats initialized');
+
+      // Update user's created surveys list
+      console.log('Calling addCreatedSurvey with:', publicKey.toString(), surveyData.surveyId);
+      await addCreatedSurvey(result.ipfsHash, publicKey.toString(), surveyData.surveyId);
+      console.log('addCreatedSurvey completed');
       // Call the parent onSubmit handler with the form data
       onSubmit(formData);
       
@@ -151,7 +169,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
         questions: [],
       });
       
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error submitting survey:', error);
       alert(error instanceof Error ? error.message : 'Failed to submit survey. Please try again.');
     }
