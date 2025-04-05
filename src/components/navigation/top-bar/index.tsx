@@ -9,6 +9,7 @@ import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { PROGRAM_ID } from "@/types/json";
+// import { useWalletDisconnectRedirect } from "@/hooks/useWalletCheck";
 
 interface Props {
   show: boolean;
@@ -38,6 +39,7 @@ const TopBar: FC<Props> = ({ show, onOpen }) => {
   const router = useRouter();
   const isMobile = screenWidth < 768;
   const { connection } = useConnection(); // ⬅️ get this at the top of your component
+  // useWalletDisconnectRedirect();
 
   // Access the connected wallet
   const { publicKey } = useWallet();
@@ -66,18 +68,17 @@ const TopBar: FC<Props> = ({ show, onOpen }) => {
         );
 
         const accountInfo = await connection.getAccountInfo(profilePDA);
+        console.log("Account Info:", accountInfo, "profilePDA", profilePDA);
 
-        if (!accountInfo) {
-          router.push("/register/onboarding");
-        }
+        // if (!accountInfo) {
+        //   router.push("/register/onboarding");
+        // }
       } catch (error) {
         console.error("Error checking user profile:", error);
       }
     };
 
     if (publicKey) {
-		console.log("PublicKey:", publicKey.toString());
-		
       checkUserProfile(publicKey);
     }
   }, [publicKey, connection, router]);

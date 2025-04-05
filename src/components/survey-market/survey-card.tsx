@@ -3,13 +3,10 @@
 import Image from "next/image";
 import { FC } from "react";
 import * as Styles from "./style";
-<<<<<<< Updated upstream
 import { SurveyModel } from "@/models/SurveyModel";
-=======
 import { useRouter } from "next/navigation";
->>>>>>> Stashed changes
 
-interface SurveyCardProps extends Omit<SurveyModel, 'questions'> {
+interface SurveyCardProps extends Omit<SurveyModel, "questions"> {
   onSetQrUrl: () => void;
 }
 
@@ -21,22 +18,18 @@ export const SurveyCard: FC<SurveyCardProps> = ({
   status,
   maxResponses,
   expireTime,
-  onSetQrUrl
+  onSetQrUrl,
 }) => {
-<<<<<<< Updated upstream
   // Calculate duration from expireTime
   const duration = new Date(expireTime).toLocaleDateString();
-  
+
   // For now, we'll use placeholder values for participants and owner info
   const participants = 0;
   const owner_name = creator;
   const owner_avatar = "/assets/default-avatar.png";
 
   const percentage = Math.min((participants / maxResponses) * 100, 100);
-=======
-  const percentage = Math.min((participants / limit) * 100, 100);
   const router = useRouter();
->>>>>>> Stashed changes
 
   return (
     <Styles.Card>
@@ -61,7 +54,9 @@ export const SurveyCard: FC<SurveyCardProps> = ({
       <Styles.CardBody>
         <Styles.CardBodyTop>
           <p>Reward</p>
-          <h2>{reward.amount} {reward.token}</h2>
+          <h2>
+            {reward.amount} {reward.token}
+          </h2>
         </Styles.CardBodyTop>
         <Styles.CardBodyBottom>
           <div>
@@ -84,7 +79,13 @@ export const SurveyCard: FC<SurveyCardProps> = ({
           <Image src={owner_avatar} width={40} height={40} alt="" />
           <p>{owner_name}</p>
         </div>
-        <Image onClick={onSetQrUrl} src={"/assets/code.svg"} width={16} height={16} alt="" />
+        <Image
+          onClick={onSetQrUrl}
+          src={"/assets/code.svg"}
+          width={16}
+          height={16}
+          alt=""
+        />
       </Styles.CardFooter>
     </Styles.Card>
   );
