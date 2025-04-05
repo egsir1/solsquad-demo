@@ -6,10 +6,62 @@ import { useState, useEffect, ReactNode } from "react";
 import * as Styles from "./styles";
 import Image from "next/image";
 import { SurveyModel } from "@/models/SurveyModel";
-import { uploadToPinata } from "@/utils/pinataUpload";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { uploadToPinata, uploadToPinataSurveyGroup } from "@/utils/pinataUpload";
+import { AnchorWallet, useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { initializeSurveyStats } from "@/utils/surveyStats";
 import { addCreatedSurvey } from "@/utils/updateUserSurveys";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import idlJson from "../../../anchor/target/idl/survey_app_program.json";
+import { AnchorProvider, Program, Idl, Wallet } from "@coral-xyz/anchor";
+import toast from "react-hot-toast";
+
+
+const idl = idlJson as Idl;
+const programId = new PublicKey("DaCvrrNqNu2SA5Jx9R7Jverp9FxtSzezCg3eu4H2aWGn");
+
+
+export const submitSurveyToSolana = async (
+  ipfsCid: string,
+  wallet: AnchorWallet,
+  connection: Connection
+): Promise<void> => {
+  try {
+
+    if (!wallet || !wallet.publicKey) {
+      toast.error("Wallet not connected");
+      return;
+    }
+
+    const provider = new AnchorProvider(connection, wallet, {
+      commitment: "confirmed",
+    });
+
+    const program = new Program(idl, provider);
+
+    // Derive PDA for survey
+    const [surveyPda] = await PublicKey.findProgramAddress(
+      [Buffer.from("survey"), wallet.publicKey.toBuffer()],
+      program.programId
+    );
+
+    await program.methods
+      .registerSurvey(ipfsCid) // match method name & argument
+      .accounts({
+        survey: surveyPda,
+        signer: wallet.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    toast.success("Survey registered on Solana!");
+  } catch (error: any) {
+    console.error("Error writing to Solana:", error);
+    toast.error("Failed to save survey on-chain");
+    throw error;
+  }
+};
+
+
 
 // Types
 interface FormData {
@@ -33,6 +85,8 @@ interface SurveyFormProps {
 }
 
 const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }): ReactNode => {
+  // const  wallet = useAnchorWallet();
+  // const { connection } = useConnection(); 
   const { publicKey } = useWallet();
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -132,7 +186,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }): ReactNode => {
         createdAt: new Date().toISOString(),
         status: formData.status,
         maxResponses: parseInt(formData.maxResponses) || 0,
-        expireTime: formData.expireTime
+        expireTime: formData.expireTime,
       };
 
       // Validate questions and options
@@ -141,19 +195,26 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }): ReactNode => {
         return;
       }
 
-      // Upload to Pinata
-      console.log('Uploading survey to Pinata:', surveyData);
-      const result = await uploadToPinata(surveyData, `${surveyData.surveyId}.json`);
-      console.log('Survey uploaded successfully:', result);
-
       // Initialize survey stats
-      await initializeSurveyStats(surveyData.surveyId, surveyData.questions);
+      const {cid: stats_surway_cid}= await initializeSurveyStats(surveyData.surveyId, surveyData.questions);
       console.log('Survey stats initialized');
+
+      // Upload to Pinata
+      surveyData.stats_surway_cid = stats_surway_cid;
+      console.log('Uploading survey to Pinata:', surveyData);
+      const result = await uploadToPinataSurveyGroup(surveyData, `${surveyData.surveyId}.json`);
+      console.log('Survey uploaded successfully:', result);
 
       // Update user's created surveys list
       console.log('Calling addCreatedSurvey with:', publicKey.toString(), surveyData.surveyId);
       await addCreatedSurvey(result.ipfsHash, publicKey.toString(), surveyData.surveyId);
       console.log('addCreatedSurvey completed');
+
+      // await submitSurveyToSolana(
+      //   result.ipfsHash,
+      //   wallet,
+      //   connection
+      // );
       // Call the parent onSubmit handler with the form data
       onSubmit(formData);
       
