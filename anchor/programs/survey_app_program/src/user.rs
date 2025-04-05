@@ -19,7 +19,6 @@ pub struct RegisterUser<'info> {
 pub struct UpdateUser<'info> {
     #[account(
         mut,
-        has_one = wallet
     )]
     pub user: Account<'info, User>,
 
