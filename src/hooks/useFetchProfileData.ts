@@ -1,5 +1,9 @@
 import { AnchorProvider, Idl, Program } from "@coral-xyz/anchor";
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import {
+  useAnchorWallet,
+  useConnection,
+  useWallet,
+} from "@solana/wallet-adapter-react";
 import { PublicKey } from "@solana/web3.js";
 import { useEffect, useState } from "react";
 import idlJson from "../../anchor/target/idl/survey_app_program.json";
@@ -22,8 +26,9 @@ interface ProfileData {
 }
 
 export const useFetchProfileData = () => {
-  const { publicKey, wallet } = useWallet();
+  const { publicKey } = useWallet();
   const { connection } = useConnection();
+  const wallet = useAnchorWallet();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,7 +41,7 @@ export const useFetchProfileData = () => {
         setLoading(false);
         return;
       }
-
+      if (!wallet) return alert("no wallet");
       try {
         const [userPda] = await PublicKey.findProgramAddress(
           [Buffer.from("user"), publicKey.toBuffer()],
@@ -55,6 +60,7 @@ export const useFetchProfileData = () => {
         const program = new Program(idl, provider);
 
         const accountData = await program.account.user.fetch(userPda);
+        console.log(accountData,'acc')
 
         const response = await fetch(
           `https://ipfs.io/ipfs/${accountData.ipfnCid}`

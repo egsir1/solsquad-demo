@@ -18,6 +18,7 @@ export const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-top: 2rem;
   & > h1 {
     font-size: 2rem;
     font-family: ${({ theme }) => theme.fonts.mona_sans};

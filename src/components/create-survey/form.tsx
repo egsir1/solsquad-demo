@@ -1,41 +1,38 @@
 // components/SurveyForm.tsx
 "use client";
 
-import styled, { keyframes } from "styled-components";
 import { useState, useEffect } from "react";
 import * as Styles from "./styles";
 import Image from "next/image";
 import { SurveyModel } from "@/models/SurveyModel";
 import { uploadSurveyToFilebase } from "@/utils/uploadSurvey";
+import { useRouter } from "next/navigation";
+import CreateSurveyHook from "@/hooks/useRegisterSurvey";
 
 // Types
-interface FormData {
+export interface FormData {
   title: string;
   surveyType: "FREE" | "PAID";
   reward: string;
   maxResponses: string;
   questions: Question[];
   totalFounde: string;
-  status:  "ACTIVE" | "COMPLETED";
+  status: "ACTIVE" | "COMPLETED";
   expireTime: string;
 }
 
-interface Question {
+export interface Question {
   text: string;
   options: string[];
 }
 
-interface SurveyFormProps {
-  onSubmit: (data: FormData) => void;
-}
-
-const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
+const SurveyForm = () => {
   const [formData, setFormData] = useState<FormData>({
     title: "",
     surveyType: "FREE",
     reward: "",
     maxResponses: "",
-    totalFounde: '',
+    totalFounde: "",
     status: "ACTIVE",
     expireTime: "",
     questions: [],
@@ -47,6 +44,8 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
       setFormData(JSON.parse(savedData));
     }
   }, []);
+
+  const { registerSurvey } = CreateSurveyHook();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -89,229 +88,230 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
     }));
   };
 
-  const addOption = (questionIndex: number) => {
-    const newQuestions = [...formData.questions];
-    newQuestions[questionIndex].options.push("");
-    setFormData((prev) => ({ ...prev, questions: newQuestions }));
-  };
-
-  const removeOption = (questionIndex: number, optionIndex: number) => {
-    const newQuestions = [...formData.questions];
-    newQuestions[questionIndex].options = newQuestions[
-      questionIndex
-    ].options.filter((_, i) => i !== optionIndex);
-    setFormData((prev) => ({ ...prev, questions: newQuestions }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const router = useRouter();
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    
+
     try {
       // Create SurveyModel from form data
       const surveyData: SurveyModel = {
         surveyId: `survey_${Date.now()}`,
         title: formData.title,
         creator: "user_public_key", // TODO: Get actual user's public key
-        questions: formData.questions.map(q => ({
+        questions: formData.questions.map((q) => ({
           question: q.text,
-          options: q.options.filter(opt => opt.trim() !== '') // Remove empty options
+          options: q.options.filter((opt) => opt.trim() !== ""), // Remove empty options
         })),
         reward: {
           amount: parseFloat(formData.reward) || 0,
-          token: "SOL"
+          token: "SOL",
         },
         createdAt: new Date().toISOString(),
         status: formData.status,
         maxResponses: parseInt(formData.maxResponses) || 0,
-        expireTime: formData.expireTime
+        expireTime: formData.expireTime,
+        surveyType: formData.surveyType,
       };
 
       // Validate questions and options
-      if (surveyData.questions.some(q => !q.question.trim() || q.options.length < 2)) {
-        alert('Each question must have a title and at least 2 options');
+      if (
+        surveyData.questions.some(
+          (q) => !q.question.trim() || q.options.length < 2
+        )
+      ) {
+        alert("Each question must have a title and at least 2 options");
         return;
       }
 
       // Upload to Filebase
       const result = await uploadSurveyToFilebase(surveyData);
-      console.log('Survey uploaded successfully:', result);
-      
+
       // Call the parent onSubmit handler with the form data
-      onSubmit(formData);
-      
+      registerSurvey(
+        result?.ipfsCid,
+        formData.surveyType,
+        formData.reward,
+      );
+
       // Clear form after successful submission
       setFormData({
         title: "",
         surveyType: "FREE",
         reward: "",
         maxResponses: "",
-        totalFounde: '',
+        totalFounde: "",
         status: "ACTIVE",
         expireTime: "",
         questions: [],
       });
-      
-    } catch (error) {
-      console.error('Error submitting survey:', error);
-      alert(error instanceof Error ? error.message : 'Failed to submit survey. Please try again.');
-    }
-  };
 
-  const handleAutoFill = () => {
-    const savedData = localStorage.getItem("lastSurvey");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    } else {
-      alert("No previous survey data found.");
+      // router.push("/survey-market");
+    } catch (error) {
+      console.error("Error submitting survey:", error);
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Failed to submit survey. Please try again."
+      );
     }
   };
 
   return (
-    <Styles.Wrapper>
-      <Styles.FormContainer onSubmit={handleSubmit}>
-        <Styles.FormSection>
-          <Styles.Label>Survey Title</Styles.Label>
-          <Styles.Input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Enter survey title"
-          />
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Survey Type</Styles.Label>
-          <select
-            name="surveyType"
-            value={formData.surveyType}
-            onChange={handleChange}
-            style={{
-              width: "100%",
-              padding: "10px",
-              background: "#0A1330",
-              border: "1px solid #343B4F",
-              borderRadius: "4px",
-              color: "#AEB9E1",
-              height: "45px",
-            }}
-          >
-            <option value="FREE">Free</option>
-            <option value="PAID">Paid</option>
-          </select>
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Total Founde</Styles.Label>
-          <Styles.Input
-            type="text"
-            name="totalFounde"
-            value={formData.totalFounde}
-            onChange={handleChange}
-            placeholder="e.g., 50SOl"
-          />
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Reward per Response (SOL)</Styles.Label>
-          <Styles.Input
-            type="number"
-            name="reward"
-            value={formData.reward}
-            onChange={handleChange}
-            step="0.01"
-            placeholder="e.g., 0.1"
-          />
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Max Responses</Styles.Label>
-          <Styles.Input
-            type="number"
-            name="maxResponses"
-            value={formData.maxResponses}
-            onChange={handleChange}
-            placeholder="e.g., 50"
-          />
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Expire Time</Styles.Label>
-          <Styles.Input
-            type="date"
-            name="expireTime"
-            value={formData.expireTime}
-            onChange={handleChange}
-            placeholder="e.g., 2024-12-31"
-          />
-        </Styles.FormSection>
-        <Styles.FormSection>
-          <Styles.Label>Questions</Styles.Label>
-          {formData.questions.map((question, questionIndex) => (
-            <Styles.QuestionCard key={questionIndex}>
-              <Styles.QuestionHeader>
-                <Styles.Input
-                  type="text"
-                  value={question.text}
-                  onChange={(e) =>
-                    handleQuestionChange(questionIndex, "text", e.target.value)
-                  }
-                  placeholder={`Question ${questionIndex + 1}`}
-                  style={{ flex: 1 }}
-                />
-              </Styles.QuestionHeader>
-              <Styles.OptionList>
-                {question.options.map((option, optionIndex) => (
-                  <Styles.OptionItem key={optionIndex}>
-                    <Styles.OptionInput
-                      type="text"
-                      value={option}
-                      onChange={(e) =>
-                        handleOptionChange(
-                          questionIndex,
-                          optionIndex,
-                          e.target.value
-                        )
-                      }
-                      placeholder={`Option ${optionIndex + 1}`}
-                    />
-                  </Styles.OptionItem>
-                ))}
-              </Styles.OptionList>
-              <Styles.RemoveButton
-                onClick={() => removeQuestion(questionIndex)}
-              >
-                <Image
-                  src="/assets/remove.svg"
-                  alt="Remove"
-                  width={20}
-                  height={20}
-                />
-                remove
-              </Styles.RemoveButton>
-            </Styles.QuestionCard>
-          ))}
-          <Styles.AddQuestionButton onClick={addQuestion}>
-            Add Question
-          </Styles.AddQuestionButton>
-        </Styles.FormSection>
-      <button type="submit">save</button>
-
-      </Styles.FormContainer>
-      <Styles.PreviewContainer>
-        <Styles.PreviewTitle>
-          Survey Preview: {formData.title || "Untitled"}
-        </Styles.PreviewTitle>
-        {formData.questions.map((question, index) => (
-          <div key={index}>
-            <Styles.PreviewQuestion>
-              <strong>Question {index + 1}:</strong>{" "}
-              {question.text || "Untitled Question"}
-            </Styles.PreviewQuestion>
-            {question.options.map((option, optionIndex) => (
-              <Styles.PreviewOption key={optionIndex}>
-                - {option || `Option ${optionIndex + 1}`}
-              </Styles.PreviewOption>
+    <>
+      <Styles.Header>
+        <h1>Create Survey</h1>
+        <Styles.SubmitButton onClick={handleSubmit} type="submit">
+          Submit The Survey
+        </Styles.SubmitButton>
+      </Styles.Header>
+      <Styles.Wrapper>
+        <Styles.FormContainer>
+          <Styles.FormSection>
+            <Styles.Label>Survey Title</Styles.Label>
+            <Styles.Input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              placeholder="Enter survey title"
+            />
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Survey Type</Styles.Label>
+            <select
+              name="surveyType"
+              value={formData.surveyType}
+              onChange={handleChange}
+              style={{
+                width: "100%",
+                padding: "10px",
+                background: "#0A1330",
+                border: "1px solid #343B4F",
+                borderRadius: "4px",
+                color: "#AEB9E1",
+                height: "45px",
+              }}
+            >
+              <option value="FREE">Free</option>
+              <option value="PAID">Paid</option>
+            </select>
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Total Founde</Styles.Label>
+            <Styles.Input
+              type="text"
+              name="totalFounde"
+              value={formData.totalFounde}
+              onChange={handleChange}
+              placeholder="e.g., 50SOl"
+            />
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Reward per Response (SOL)</Styles.Label>
+            <Styles.Input
+              type="number"
+              name="reward"
+              value={formData.reward}
+              onChange={handleChange}
+              step="0.01"
+              placeholder="e.g., 0.1"
+            />
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Max Responses</Styles.Label>
+            <Styles.Input
+              type="number"
+              name="maxResponses"
+              value={formData.maxResponses}
+              onChange={handleChange}
+              placeholder="e.g., 50"
+            />
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Expire Time</Styles.Label>
+            <Styles.Input
+              type="date"
+              name="expireTime"
+              value={formData.expireTime}
+              onChange={handleChange}
+              placeholder="e.g., 2024-12-31"
+            />
+          </Styles.FormSection>
+          <Styles.FormSection>
+            <Styles.Label>Questions</Styles.Label>
+            {formData.questions.map((question, questionIndex) => (
+              <Styles.QuestionCard key={questionIndex}>
+                <Styles.QuestionHeader>
+                  <Styles.Input
+                    type="text"
+                    value={question.text}
+                    onChange={(e) =>
+                      handleQuestionChange(
+                        questionIndex,
+                        "text",
+                        e.target.value
+                      )
+                    }
+                    placeholder={`Question ${questionIndex + 1}`}
+                    style={{ flex: 1 }}
+                  />
+                </Styles.QuestionHeader>
+                <Styles.OptionList>
+                  {question.options.map((option, optionIndex) => (
+                    <Styles.OptionItem key={optionIndex}>
+                      <Styles.OptionInput
+                        type="text"
+                        value={option}
+                        onChange={(e) =>
+                          handleOptionChange(
+                            questionIndex,
+                            optionIndex,
+                            e.target.value
+                          )
+                        }
+                        placeholder={`Option ${optionIndex + 1}`}
+                      />
+                    </Styles.OptionItem>
+                  ))}
+                </Styles.OptionList>
+                <Styles.RemoveButton
+                  onClick={() => removeQuestion(questionIndex)}
+                >
+                  <Image
+                    src="/assets/remove.svg"
+                    alt="Remove"
+                    width={20}
+                    height={20}
+                  />
+                  remove
+                </Styles.RemoveButton>
+              </Styles.QuestionCard>
             ))}
-          </div>
-        ))}
-      </Styles.PreviewContainer>
-    </Styles.Wrapper>
+            <Styles.AddQuestionButton type="button" onClick={addQuestion}>
+              Add Question
+            </Styles.AddQuestionButton>
+          </Styles.FormSection>
+        </Styles.FormContainer>
+        <Styles.PreviewContainer>
+          <Styles.PreviewTitle>
+            Survey Preview: {formData.title || "Untitled"}
+          </Styles.PreviewTitle>
+          {formData.questions.map((question, index) => (
+            <div key={index}>
+              <Styles.PreviewQuestion>
+                <strong>Question {index + 1}:</strong>{" "}
+                {question.text || "Untitled Question"}
+              </Styles.PreviewQuestion>
+              {question.options.map((option, optionIndex) => (
+                <Styles.PreviewOption key={optionIndex}>
+                  - {option || `Option ${optionIndex + 1}`}
+                </Styles.PreviewOption>
+              ))}
+            </div>
+          ))}
+        </Styles.PreviewContainer>
+      </Styles.Wrapper>
+    </>
   );
 };
 
