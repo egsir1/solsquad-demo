@@ -16,4 +16,5 @@ export interface SurveyModel {
   expireTime: string;
   cid: string; // IPFS content identifier
   stats_surway_cid: string;
+  surveyType: string
 } 

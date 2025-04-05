@@ -32,6 +32,7 @@
     "@tanstack/react-query-next-experimental": "^5.66.9",
     "daisyui": "^4.12.24",
     "dotenv": "^16.4.7",
+    "ipfs-http-client": "^60.0.1",
     "jotai": "^2.12.1",
     "next": "14.2.24",
     "qrcode.react": "^4.2.0",
