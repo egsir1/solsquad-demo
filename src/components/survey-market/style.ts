@@ -5,6 +5,7 @@ export const SurveyMarketHeaderWrapper = styled.div`
   margin: 10rem auto;
   text-align: center;
   box-sizing: border-box;
+  position: relative;
 
   @media screen and (max-width: 1070px) {
     max-width: 80%;
@@ -28,9 +29,7 @@ export const CardWrapper = styled.div`
   justify-content: center;
   padding: 3rem 1rem;
   box-sizing: border-box;
-  /* @media screen and (max-width: 900px) {
-    grid-gap: 1rem;
-  } */
+
   @media screen and (max-width: 1316px) {
     grid-gap: 2rem;
   }
@@ -94,7 +93,7 @@ export const CardHeader = styled.div`
     & > div {
       display: flex;
       align-items: center;
-      grid-gap: .8rem;
+      grid-gap: 0.8rem;
       & > span {
         display: flex;
         align-items: center;
@@ -196,5 +195,36 @@ export const CardFooter = styled.div`
   }
   & > img {
     cursor: pointer;
+  }
+`;
+
+//
+export const TabBarContainer = styled.div`
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 5px;
+  width: fit-content;
+  margin-bottom: 10px;
+  position: absolute;
+  right: 0;
+  margin-top: 1rem;
+`;
+
+export const Tab = styled.button<{ $active: boolean }>`
+  background: ${({ $active, theme }) =>
+    $active ? theme.color.active : "transparent"};
+  color: ${({ theme }) => theme.color.span_color};
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.3s ease;
+  &:hover {
+    background: ${({ theme }) => theme.color.active};
+  }
+  &:focus {
+    outline: none;
   }
 `;

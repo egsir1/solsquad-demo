@@ -13,6 +13,7 @@ interface SurveyCardProps {
   status: string;
   owner_name: string;
   owner_avatar: string;
+  onSetQrUrl: () => void;
 }
 
 export const SurveyCard: FC<SurveyCardProps> = ({
@@ -24,6 +25,7 @@ export const SurveyCard: FC<SurveyCardProps> = ({
   reward,
   status,
   title,
+  onSetQrUrl
 }) => {
   const percentage = Math.min((participants / limit) * 100, 100);
 
@@ -73,7 +75,7 @@ export const SurveyCard: FC<SurveyCardProps> = ({
           <Image src={owner_avatar} width={40} height={40} alt="" />
           <p>{owner_name}</p>
         </div>
-        <Image src={"/assets/code.svg"} width={16} height={16} alt="" />
+        <Image onClick={onSetQrUrl} src={"/assets/code.svg"} width={16} height={16} alt="" />
       </Styles.CardFooter>
     </Styles.Card>
   );

@@ -60,6 +60,7 @@ export const OverviewCard = styled.div`
 	height: 100px;
 	width: auto;
 	background: ${({ theme }) => theme.color.box_color};
+	border: ${({ theme }) => `1px solid ${theme.color.border_color}`};
 `;
 
 export const CardLeft = styled.div`

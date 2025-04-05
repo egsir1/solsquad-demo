@@ -16,9 +16,34 @@ declare module "styled-components" {
       btn_gradient:string;
       border_color:string;
       active:string;
+      form: {
+        background: string;
+        text: string;
+        border: string;
+        accent: string;
+      };
     },
     fonts:{
       mona_sans:string;
     }
+    typography: {
+      fontFamily: string;
+      fontSize: {
+      base: string;
+      heading: string;
+      small: string;
+      };
+    };
+    spacing: {
+      small: string;
+      medium: string;
+      large: string;
+    };
+    shadows: {
+      card: string;
+      glow: string;
+    };
+    borderRadius: string;
+    tabBorderRadius: string;
   }
 }

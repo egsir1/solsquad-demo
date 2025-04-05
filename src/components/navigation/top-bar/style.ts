@@ -62,6 +62,27 @@ export const NavLink = styled(Link)<{ $active?: boolean }>`
   align-items: center;
 `;
 
+export const CreateButton = styled.button`
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  grid-gap:5px;
+  align-items: center;
+  background-color: ${({ theme }) => theme.color.pink_color};
+  height: 40px;
+  width: 130px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 500;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  color: white;
+  font-family: ${({ theme }) => theme.fonts.mona_sans};
+  
+`;
+
 export const RightSection = styled.div`
   margin-left: auto;
   display: flex;
