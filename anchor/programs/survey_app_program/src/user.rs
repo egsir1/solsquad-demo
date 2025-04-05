@@ -17,15 +17,19 @@ pub struct RegisterUser<'info> {
 
 #[account]
 pub struct User {
+    pub wallet: Pubkey,
     pub ipfn_cid: String,
 }
 
 impl User {
-    pub const MAX_SIZE: usize = 4 + 100;
+    pub const MAX_SIZE: usize = 
+        32 +      // wallet
+        4 + 100;  // ipfn_cid
 }
 
 pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()> {
     let user = &mut ctx.accounts.user;
+    user.wallet = *ctx.accounts.signer.key;
     user.ipfn_cid = ipfn_cid;
     Ok(())
 }

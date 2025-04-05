@@ -199,6 +199,10 @@ export type SurveyAppProgram = {
         "kind": "struct",
         "fields": [
           {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
             "name": "ipfnCid",
             "type": "string"
           }

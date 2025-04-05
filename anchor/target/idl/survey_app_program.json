@@ -193,6 +193,10 @@
         "kind": "struct",
         "fields": [
           {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
             "name": "ipfn_cid",
             "type": "string"
           }
