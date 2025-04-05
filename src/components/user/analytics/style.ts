@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box } from '@mui/material';
+
 export const LayoutContainer = styled.div`
 	display: flex;
 	min-height: 100vh;
@@ -102,49 +102,49 @@ export const ChartWrapper = styled.div`
 	border: ${({ theme }) => `1px solid ${theme.color.border_color}`};
 `;
 
-export const TableContainer = styled(Box)(({ theme }) => ({
-	height: 520,
-	width: '100%',
-	backgroundColor: '#0B1739',
-	borderRadius: '10px',
-	color: '#fff',
+// export const TableContainer = styled(Box)(({ theme }) => ({
+// 	height: 520,
+// 	width: '100%',
+// 	backgroundColor: '#0B1739',
+// 	borderRadius: '10px',
+// 	color: '#fff',
 
-	'& .MuiDataGrid-root': {
-		backgroundColor: '#343B4F !important',
-		border: '1px solid #343B4F',
-	},
+// 	'& .MuiDataGrid-root': {
+// 		backgroundColor: '#343B4F !important',
+// 		border: '1px solid #343B4F',
+// 	},
 
-	'& .MuiDataGrid-columnHeaders': {
-		backgroundColor: '#343B4F !important',
-		borderBottom: '1px solid #343B4F',
-	},
+// 	'& .MuiDataGrid-columnHeaders': {
+// 		backgroundColor: '#343B4F !important',
+// 		borderBottom: '1px solid #343B4F',
+// 	},
 
-	// ✅ override individual header cells
-	'& .custom-header': {
-		backgroundColor: '#343B4F !important',
-		color: '#F1F5F9',
-	},
+// 	// ✅ override individual header cells
+// 	'& .custom-header': {
+// 		backgroundColor: '#343B4F !important',
+// 		color: '#F1F5F9',
+// 	},
 
-	'& .MuiDataGrid-columnSeparator': {
-		color: '#343B4F',
-	},
+// 	'& .MuiDataGrid-columnSeparator': {
+// 		color: '#343B4F',
+// 	},
 
-	'& .MuiDataGrid-cell': {
-		color: '#E2E8F0',
-		borderBottom: '1px solid #343B4F',
-	},
+// 	'& .MuiDataGrid-cell': {
+// 		color: '#E2E8F0',
+// 		borderBottom: '1px solid #343B4F',
+// 	},
 
-	'& .MuiDataGrid-row': {
-		borderBottom: '1px solid #343B4F',
-	},
+// 	'& .MuiDataGrid-row': {
+// 		borderBottom: '1px solid #343B4F',
+// 	},
 
-	'& .MuiDataGrid-footerContainer': {
-		backgroundColor: 'transparent',
-		color: '#F1F5F9',
-		borderTop: '1px solid #343B4F',
-	},
+// 	'& .MuiDataGrid-footerContainer': {
+// 		backgroundColor: 'transparent',
+// 		color: '#F1F5F9',
+// 		borderTop: '1px solid #343B4F',
+// 	},
 
-	'& .MuiDataGrid-row:hover': {
-		backgroundColor: '#1E40AF22',
-	},
-}));
+// 	'& .MuiDataGrid-row:hover': {
+// 		backgroundColor: '#1E40AF22',
+// 	},
+// }));
