@@ -40,7 +40,7 @@ const pulse = keyframes`
 `;
 
 // Styled Components
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   background: ${(props) => props.theme.color.form.background};
   border: 1px solid ${(props) => props.theme.color.form.border};
   border-radius: 8px;
@@ -282,4 +282,13 @@ export const Wrapper = styled.div`
   @media screen and (max-width: 1000px) {
     flex-direction: column;
   }
+`;
+
+export const SuccessMessage = styled.div`
+  color: ${(props) => props.theme.color.light_green_color};
+  font-size: ${(props) => props.theme.typography.fontSize.small};
+  padding: ${(props) => props.theme.spacing.small};
+  background: ${(props) => props.theme.color.light_green_color}22;
+  border-radius: 4px;
+  animation: ${fadeIn} 0.5s ease-out;
 `;

@@ -3,31 +3,31 @@
 import Image from "next/image";
 import { FC } from "react";
 import * as Styles from "./style";
+import { SurveyModel } from "@/models/SurveyModel";
 
-interface SurveyCardProps {
-  title: string;
-  reward: number;
-  duration: string;
-  limit: number;
-  participants: number;
-  status: string;
-  owner_name: string;
-  owner_avatar: string;
+interface SurveyCardProps extends Omit<SurveyModel, 'questions'> {
   onSetQrUrl: () => void;
 }
 
 export const SurveyCard: FC<SurveyCardProps> = ({
-  duration,
-  limit,
-  owner_avatar,
-  owner_name,
-  participants,
+  surveyId,
+  title,
+  creator,
   reward,
   status,
-  title,
+  maxResponses,
+  expireTime,
   onSetQrUrl
 }) => {
-  const percentage = Math.min((participants / limit) * 100, 100);
+  // Calculate duration from expireTime
+  const duration = new Date(expireTime).toLocaleDateString();
+  
+  // For now, we'll use placeholder values for participants and owner info
+  const participants = 0;
+  const owner_name = creator;
+  const owner_avatar = "/assets/default-avatar.png";
+
+  const percentage = Math.min((participants / maxResponses) * 100, 100);
 
   return (
     <Styles.Card>
@@ -52,7 +52,7 @@ export const SurveyCard: FC<SurveyCardProps> = ({
       <Styles.CardBody>
         <Styles.CardBodyTop>
           <p>Reward</p>
-          <h2>{reward} SOL</h2>
+          <h2>{reward.amount} {reward.token}</h2>
         </Styles.CardBodyTop>
         <Styles.CardBodyBottom>
           <div>
@@ -62,7 +62,7 @@ export const SurveyCard: FC<SurveyCardProps> = ({
             </p>
             <p>
               <Image src={"/assets/users.svg"} width={18} height={18} alt="" />
-              {limit}
+              {maxResponses}
             </p>
           </div>
           <Styles.CardBodyLine width={percentage}>

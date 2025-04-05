@@ -5,6 +5,8 @@ import styled, { keyframes } from "styled-components";
 import { useState, useEffect } from "react";
 import * as Styles from "./styles";
 import Image from "next/image";
+import { SurveyModel } from "@/models/SurveyModel";
+import { uploadSurveyToFilebase } from "@/utils/uploadSurvey";
 
 // Types
 interface FormData {
@@ -101,13 +103,58 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
     setFormData((prev) => ({ ...prev, questions: newQuestions }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const submissionData = {
-      ...formData,
-      questions: JSON.stringify(formData.questions),
-    };
-    localStorage.setItem("lastSurvey", JSON.stringify(formData));
+    
+    try {
+      // Create SurveyModel from form data
+      const surveyData: SurveyModel = {
+        surveyId: `survey_${Date.now()}`,
+        title: formData.title,
+        creator: "user_public_key", // TODO: Get actual user's public key
+        questions: formData.questions.map(q => ({
+          question: q.text,
+          options: q.options.filter(opt => opt.trim() !== '') // Remove empty options
+        })),
+        reward: {
+          amount: parseFloat(formData.reward) || 0,
+          token: "SOL"
+        },
+        createdAt: new Date().toISOString(),
+        status: formData.status,
+        maxResponses: parseInt(formData.maxResponses) || 0,
+        expireTime: formData.expireTime
+      };
+
+      // Validate questions and options
+      if (surveyData.questions.some(q => !q.question.trim() || q.options.length < 2)) {
+        alert('Each question must have a title and at least 2 options');
+        return;
+      }
+
+      // Upload to Filebase
+      const result = await uploadSurveyToFilebase(surveyData);
+      console.log('Survey uploaded successfully:', result);
+      
+      // Call the parent onSubmit handler with the form data
+      onSubmit(formData);
+      
+      // Clear form after successful submission
+      setFormData({
+        title: "",
+        surveyType: "FREE",
+        reward: "",
+        maxResponses: "",
+        totalFounde: '',
+        status: "ACTIVE",
+        expireTime: "",
+        questions: [],
+      });
+      
+    } catch (error) {
+      console.error('Error submitting survey:', error);
+      alert(error instanceof Error ? error.message : 'Failed to submit survey. Please try again.');
+    }
   };
 
   const handleAutoFill = () => {
@@ -121,7 +168,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
 
   return (
     <Styles.Wrapper>
-      <Styles.FormContainer>
+      <Styles.FormContainer onSubmit={handleSubmit}>
         <Styles.FormSection>
           <Styles.Label>Survey Title</Styles.Label>
           <Styles.Input
@@ -243,6 +290,8 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
             Add Question
           </Styles.AddQuestionButton>
         </Styles.FormSection>
+      <button type="submit">save</button>
+
       </Styles.FormContainer>
       <Styles.PreviewContainer>
         <Styles.PreviewTitle>
