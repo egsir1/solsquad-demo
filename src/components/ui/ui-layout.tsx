@@ -9,20 +9,32 @@ import { ExplorerLink } from "../cluster/cluster-ui";
 import useScreenWidth from "@/hooks/useScreenWidth";
 import MobileSidebar from "../navigation/side-bar/mobile";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 const TopBar = dynamic(() => import("../navigation/top-bar"), {
   ssr: false,
-})
+});
 export function UiLayout({ children }: { children: ReactNode }) {
   const [showSidebar, setShowSidebar] = React.useState(false);
- 
 
   const screenWidth = useScreenWidth();
   const isMobile = screenWidth < 768;
+  const pathname = usePathname();
+
+  const isRegisterPage = pathname.includes("register");
+
   return (
     <Styles.Container>
-      <TopBar show={showSidebar} onOpen={() => setShowSidebar(true)} />
+      {!isRegisterPage && (
+        <TopBar show={showSidebar} onOpen={() => setShowSidebar(true)} />
+      )}
       <Styles.Main>
-        {isMobile && showSidebar && <MobileSidebar onClose={() => setShowSidebar(false)} />}
+        {!isRegisterPage && (
+          <>
+            {isMobile && showSidebar && (
+              <MobileSidebar onClose={() => setShowSidebar(false)} />
+            )}
+          </>
+        )}
         <Suspense>{children}</Suspense>
         <Toaster position="bottom-right" />
       </Styles.Main>

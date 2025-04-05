@@ -5,6 +5,7 @@ import { FC, useState } from "react";
 import * as Styles from "./style";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface Props {
   onClose: () => void;
@@ -14,12 +15,12 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
   const [activeLink, setActiveLink] = useState("Analytics"); // Mock active link
 
   const navItems = [
-    {
-      label: "Dashboard",
-      href: "/user",
-      icon: "/assets/home.svg",
-      active: "/assets/home-active.svg",
-    },
+    // {
+    //   label: "Dashboard",
+    //   href: "/user",
+    //   icon: "/assets/home.svg",
+    //   active: "/assets/home-active.svg",
+    // },
     {
       label: "Discover",
       href: "/survey-market",
@@ -53,6 +54,7 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
   ];
 
   const path = usePathname();
+  const router = useRouter();
 
   return (
     <Styles.SidebarContainer height="0">
@@ -63,6 +65,15 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
         height={18}
         alt=""
       />
+      <Styles.CreateButton
+        onClick={() => {
+          router.push("/survey-market/create-survey");
+          onClose();
+        }}
+      >
+        <Image src={"/assets/add.svg"} width={15} height={15} alt="" />
+        Create
+      </Styles.CreateButton>
       <Styles.NavList>
         {navItems.map((item) => {
           const isActive = path === item.href;
@@ -88,6 +99,7 @@ const MobileSidebar: FC<Props> = ({ onClose }) => {
           );
         })}
       </Styles.NavList>
+
       <Styles.UserProfile>
         <Styles.Avatar
           src="https://gratisography.com/wp-content/uploads/2024/11/gratisography-augmented-reality-800x525.jpg"

@@ -201,7 +201,7 @@ export const CardFooter = styled.div`
 //
 export const TabBarContainer = styled.div`
   display: flex;
-  background: rgba(255, 255, 255, 0.1);
+  background: ${({theme}) =>theme.color.box_color};
   border-radius: 20px;
   padding: 5px;
   width: fit-content;
@@ -213,7 +213,7 @@ export const TabBarContainer = styled.div`
 
 export const Tab = styled.button<{ $active: boolean }>`
   background: ${({ $active, theme }) =>
-    $active ? theme.color.active : "transparent"};
+    $active ? theme.color.pink_color : "transparent"};
   color: ${({ theme }) => theme.color.span_color};
   border: none;
   border-radius: 20px;
@@ -222,7 +222,7 @@ export const Tab = styled.button<{ $active: boolean }>`
   font-size: 13px;
   transition: background 0.3s ease;
   &:hover {
-    background: ${({ theme }) => theme.color.active};
+    background: ${({ theme }) => theme.color.pink_color};
   }
   &:focus {
     outline: none;

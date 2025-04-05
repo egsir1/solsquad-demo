@@ -1,9 +1,9 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 const useScreenWidth = () => {
-  const [screenWidth, setScreenWidth] = useState<number>(
-    typeof window !== "undefined" ? window.innerWidth : 0
-  );
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -11,7 +11,7 @@ const useScreenWidth = () => {
     };
 
     window.addEventListener("resize", handleResize);
-    
+
     // Cleanup on unmount
     return () => window.removeEventListener("resize", handleResize);
   }, []);

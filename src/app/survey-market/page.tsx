@@ -19,7 +19,6 @@ const SurveyMarket = () => {
     <div>
       <SurveyMarketHeader />
       <div>
-        <h1></h1>
         <Styles.CardWrapper>
           {SurveyData.map((survey) => (
             <SurveyCard

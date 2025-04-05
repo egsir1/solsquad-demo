@@ -1,8 +1,8 @@
-// components/Sidebar.js
-'use client';
+"use client";
 
 import { useState } from 'react';
 import * as Styles from './style';
+import { usePathname } from 'next/navigation';
 
 // Sidebar Component
 const Sidebar = () => {
@@ -35,13 +35,15 @@ const Sidebar = () => {
 		},
 	];
 
+  const path = usePathname()
+
   return (
     <Styles.SidebarContainer height="5.5rem">
       <Styles.NavList>
-        {navItems.map((item) => {
-          const isActive = activeLink === item.label;
+        {navItems.map((item,index) => {
+          const isActive = path === item.href;
           return (
-            <Styles.NavItem key={item.label} $active={isActive}>
+            <Styles.NavItem key={index} $active={isActive}>
               <Styles.Icon
                 src={isActive ? item?.active : item.icon}
                 width={16}

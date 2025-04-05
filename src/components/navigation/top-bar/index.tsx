@@ -6,7 +6,7 @@ import * as Styles from "./style";
 import useScreenWidth from "@/hooks/useScreenWidth";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 // TopBar Component
 interface Props {
@@ -31,7 +31,7 @@ const navItems = [
 
 const TopBar: FC<Props> = ({ show, onOpen }) => {
   const [activeLink, setActiveLink] = useState("Dashboard"); // Mock active link
-   const router = useRouter()
+  const router = useRouter();
   const screenWidth = useScreenWidth();
   const isMobile = screenWidth < 768;
 
@@ -74,10 +74,14 @@ const TopBar: FC<Props> = ({ show, onOpen }) => {
         </Styles.NavList>
       )}
       <Styles.RightSection>
-        <Styles.CreateButton onClick={() => router.push("/survey-market/create-survey")}>
-          <Image src={"/assets/add.svg"} width={15} height={15} alt="" />
-          Create
-        </Styles.CreateButton>
+        {!isMobile && (
+          <Styles.CreateButton
+            onClick={() => router.push("/survey-market/create-survey")}
+          >
+            <Image src={"/assets/add.svg"} width={15} height={15} alt="" />
+            Create
+          </Styles.CreateButton>
+        )}
         {!isMobile && (
           <>
             <Styles.WalletAddress></Styles.WalletAddress>
