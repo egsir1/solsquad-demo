@@ -9,10 +9,9 @@ export const LayoutContainer = styled.div`
 export const SidebarWrapper = styled.div`
 	width: 250px;
 	min-width: 250px;
-	background-color: #fff;
 	box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-
-	@media (max-width: 768px) {
+     box-sizing: border-box;
+	@media screen and (max-width: 768px) {
 		width: 200px;
 		min-width: 200px;
 	}
@@ -20,12 +19,12 @@ export const SidebarWrapper = styled.div`
 
 export const MainContent = styled.main`
 	flex: 1;
-	padding: 2rem;
 	overflow-y: auto;
 	box-sizing: border-box;
-
+ 	padding: 2rem;
 	@media (max-width: 768px) {
 		padding: 1.5rem;
+		width: 100%;
 	}
 
 	@media (max-width: 480px) {

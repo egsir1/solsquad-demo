@@ -1,7 +1,6 @@
-import dynamic from "next/dynamic";
 
-const SafeImage = dynamic(() => import("next/image"), { ssr: false });
 
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -106,7 +105,7 @@ export const NavLink = styled(Link)<{ $active: boolean }>`
   }
 `;
 
-export const Icon = styled(SafeImage)`
+export const Icon = styled(Image)`
   margin-right: 10px;
   font-size: 18px; // Placeholder for icons
 `;
@@ -142,4 +141,26 @@ export const AccountLink = styled(Link)`
   &:hover {
     opacity: 1;
   }
+`;
+
+
+export const CreateButton = styled.button`
+  position: relative;
+  border-radius: 8px;
+  display: flex;
+  grid-gap:5px;
+  align-items: center;
+  background-color: ${({ theme }) => theme.color.pink_color};
+  height: 40px;
+  width: 130px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 500;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  color: white;
+  font-family: ${({ theme }) => theme.fonts.mona_sans};
+  
 `;

@@ -13,6 +13,9 @@ interface FormData {
   reward: string;
   maxResponses: string;
   questions: Question[];
+  totalFounde: string;
+  status:  "ACTIVE" | "COMPLETED";
+  expireTime: string;
 }
 
 interface Question {
@@ -30,6 +33,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
     surveyType: "FREE",
     reward: "",
     maxResponses: "",
+    totalFounde: '',
+    status: "ACTIVE",
+    expireTime: "",
     questions: [],
   });
 
@@ -147,6 +153,16 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
           </select>
         </Styles.FormSection>
         <Styles.FormSection>
+          <Styles.Label>Total Founde</Styles.Label>
+          <Styles.Input
+            type="text"
+            name="totalFounde"
+            value={formData.totalFounde}
+            onChange={handleChange}
+            placeholder="e.g., 50SOl"
+          />
+        </Styles.FormSection>
+        <Styles.FormSection>
           <Styles.Label>Reward per Response (SOL)</Styles.Label>
           <Styles.Input
             type="number"
@@ -165,6 +181,16 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ onSubmit }) => {
             value={formData.maxResponses}
             onChange={handleChange}
             placeholder="e.g., 50"
+          />
+        </Styles.FormSection>
+        <Styles.FormSection>
+          <Styles.Label>Expire Time</Styles.Label>
+          <Styles.Input
+            type="date"
+            name="expireTime"
+            value={formData.expireTime}
+            onChange={handleChange}
+            placeholder="e.g., 2024-12-31"
           />
         </Styles.FormSection>
         <Styles.FormSection>

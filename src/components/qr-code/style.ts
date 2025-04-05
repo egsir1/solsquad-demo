@@ -11,16 +11,19 @@ export const QRCodeContainer = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 9999999;
-  &>img{
+  & > img {
     position: absolute;
     top: 60px;
     right: 60px;
     cursor: pointer;
   }
   & > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid ${({ theme }) => theme.color.border_color};
-    width: 400px;
-    height: 400px;
+    width: 420px;
+    height: 420px;
     background-color: ${({ theme }) => theme.color.box_color};
     box-shadow: 0px 8px 28px 0px rgba(1, 5, 17, 0.3);
     & > canvas {

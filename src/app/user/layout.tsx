@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import Sidebar from '@/components/navigation/side-bar';
 import {
 	LayoutContainer,
@@ -10,7 +11,7 @@ import { ReactNode } from 'react';
 
 export default function UserLayout({ children }: { children: ReactNode }) {
 	const screenWidth = useScreenWidth();
-	const isMobile = screenWidth < 768;
+	const isMobile = Number(screenWidth) < 768;
 
 	return (
 		<LayoutContainer>

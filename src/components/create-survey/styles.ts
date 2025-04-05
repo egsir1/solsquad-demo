@@ -7,6 +7,10 @@ export const Container = styled.div`
   max-width: 1420px;
 
   margin: 5rem auto;
+
+  @media screen and (max-width: 1450px) {
+    width: 95%;
+  }
 `;
 
 export const Header = styled.div`
@@ -45,6 +49,9 @@ export const FormContainer = styled.div`
   animation: ${fadeIn} 0.5s ease-out;
   box-sizing: border-box;
   width: 70%;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -74,10 +81,13 @@ export const Input = styled.input`
   background: ${(props) => props.theme.color.row_color};
   border: 1px solid ${(props) => props.theme.color.form.border};
   border-radius: 4px;
-  color: ${(props) => props.theme.color.form.text};
+  color: ${({ theme }) => theme.color.header_color};
   transition: border-color 0.3s ease;
   height: 45px;
 
+  &::-webkit-calendar-picker-indicator{
+    background-color: white;
+  }
   &:focus {
     outline: none;
     border-color: ${(props) => props.theme.color.form.accent};
@@ -243,6 +253,9 @@ export const PreviewContainer = styled.div`
   box-shadow: ${(props) => props.theme.shadows.card};
   animation: ${fadeIn} 0.5s ease-out;
   width: 30%;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+  }
 `;
 
 export const PreviewTitle = styled.h3`
@@ -266,4 +279,7 @@ export const PreviewOption = styled.div`
 export const Wrapper = styled.div`
   display: flex;
   grid-gap: 2rem;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 `;
