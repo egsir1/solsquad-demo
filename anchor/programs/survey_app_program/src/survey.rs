@@ -15,6 +15,17 @@ pub struct RegisterSurvey<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct UpdateSurvey<'info> {
+    #[account(
+        mut,
+        has_one = authority
+    )]
+    pub survey: Account<'info, Survey>,
+    pub authority: Signer<'info>,
+}
+
+
 #[account]
 pub struct Survey {
     pub authority: Pubkey,
@@ -29,5 +40,11 @@ pub fn register_survey(ctx: Context<RegisterSurvey>, ipfn_cid: String) -> Result
     let survey = &mut ctx.accounts.survey;
     survey.ipfn_cid = ipfn_cid;
     survey.authority = ctx.accounts.signer.key();
+    Ok(())
+}
+
+pub fn update_survey(ctx: Context<UpdateSurvey>, ipfn_cid: String) -> Result<()> {
+    let survey = &mut ctx.accounts.survey;
+    survey.ipfn_cid = ipfn_cid;
     Ok(())
 }

@@ -15,6 +15,21 @@ pub struct RegisterUser<'info> {
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+pub struct UpdateUser<'info> {
+    #[account(
+        mut,
+        has_one = wallet
+    )]
+    pub user: Account<'info, User>,
+
+    #[account(mut)]
+    pub signer: Signer<'info>,
+
+    pub system_program: Program<'info, System>,
+}
+
+
 #[account]
 pub struct User {
     pub wallet: Pubkey,
@@ -34,3 +49,8 @@ pub fn register_user(ctx: Context<RegisterUser>, ipfn_cid: String) -> Result<()>
     Ok(())
 }
 
+pub fn update_user(ctx: Context<UpdateUser>, ipfn_cid: String) -> Result<()> {
+    let user = &mut ctx.accounts.user;
+    user.ipfn_cid = ipfn_cid;
+    Ok(())    
+}
